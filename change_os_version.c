@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 		"Incorrect magic number, not a boot file.\n");
 
 	curv.version = *(addr + 11);
-	printf("Current OS version:\t%u.%u.%u %u-%02u\n",
+	printf("Current OS version: %u.%u.%u %u-%02u\n",
 		curv.a, curv.b, curv.c,
 		curv.year + 2000, curv.month);
 
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 	}
 
 	if (curv.version != newv.version) {
-		printf("New OS version:\t\t%u.%u.%u %u-%02u\n",
+		printf("New OS version: %u.%u.%u %u-%02u\n",
 			newv.a, newv.b, newv.c,
 			newv.year + 2000, newv.month);
 
