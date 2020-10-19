@@ -63,7 +63,7 @@ fw=${bl:$((${#bl} - 4)):4}
 #
 device=${bl:0:$((${#bl} - 8))}
 
-if echo $device | grep -Ev 'G98([168][BNU0])|N98([05]F|[16][BNU0])' >/dev/null; then
+if echo $device | grep -Ev 'G98([168][NU0])|N98([16][NU0])' >/dev/null; then
   ui_print " - Unsupported device detected. Installation aborted."
   ui_print " "
   exit 1
