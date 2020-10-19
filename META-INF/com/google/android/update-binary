@@ -45,22 +45,31 @@ print_full_bar
 print_justified "Back to the Future"
 print_justified "OS Patch level changer v1.0"
 print_justified "of boot and recovery partitions"
-print_justified "for Samsung S10/Note10 devices."
-print_justified "https://github.com/CruelKernel/"
+print_justified "for N20 and S20 Snapdragon Devices"
+print_justified "edited by jimbo77 for JimboK Kernel users"
 print_full_bar
 ui_print " "
 
+os=$(getprop ro.build.version.release)
+major=${os%%.*}
 bl=$(getprop ro.boot.bootloader)
+
+# Firmware version starts at either 8th or 9th character, depending on length
+# of bootloader string (12 or 13).
+#
+fw=${bl:$((${#bl} - 4)):4}
 
 # Device is first 5 characters of bootloader string.
 #
 device=${bl:0:$((${#bl} - 8))}
 
-if echo $device | grep -Ev 'G97([035][FN0]|7[BN])|N97([05][FN0]|6[BN0]|1N)' >/dev/null; then
+if echo $device | grep -Ev 'G98([168][BNU0])|N98([05]F|[16][BNU0])' >/dev/null; then
   ui_print " - Unsupported device detected. Installation aborted."
   ui_print " "
   exit 1
 fi
+
+ui_print " - Detected a $device device on $fw firmware."
 
 date="$(echo $ZIPNAME | sed 's/^.*-\(2[0-9]\{3\}-[01][0-9]\).zip$/\1/')"
 
@@ -80,9 +89,9 @@ ui_print " - Patching boot ..."
 /tmp/change_os_version /dev/block/by-name/boot same $date 2>&1 |
 	sed 's/^\(.*\)$/ui_print  - - \1\n/' >> /proc/self/fd/$OUTFD
 ui_print " "
-ui_print " - Patching recovery ..."
-/tmp/change_os_version /dev/block/by-name/recovery same $date 2>&1 |
-	sed 's/^\(.*\)$/ui_print  - - \1\n/' >> /proc/self/fd/$OUTFD
+#ui_print " - Patching recovery ..."
+#/tmp/change_os_version /dev/block/by-name/recovery same $date 2>&1 |
+#	sed 's/^\(.*\)$/ui_print  - - \1\n/' >> /proc/self/fd/$OUTFD
 
 rm -f /tmp/change_os_version
 
